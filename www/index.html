@@ -1,0 +1,49 @@
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/chaos.js"></script>
+<script type="text/javascript">
+    
+    window.onload = function() {
+        
+        var completed = false;
+        
+        $("html").click(function() {
+            completed = true;
+        });
+        
+        function animate() {
+            
+            if (!completed) {
+                
+                //for (var i = 0; i < 30; i++) {
+                    cg.next();
+                //}
+                
+                setTimeout(animate, 0);
+                
+            } else {
+                if ($(cg.canvas).size()) switchCanvasToImg();
+            }
+            
+            setTimeout(animate, 0);
+        }
+        
+        
+        function switchCanvasToImg() {
+            
+            var data = cg.canvas.toDataURL("image/jpeg");
+            
+            var image = new Image();
+            image.src = data;
+            image.width = cg.width;
+            image.height = cg.height;
+            
+            $(cg.canvas).replaceWith(image);
+        }
+        
+        var cg = new chaos.Chaos(new chaos.IFS(0.1), 512, 512);
+        
+        setTimeout(animate, 0);
+        document.body.appendChild(cg.canvas);
+    };
+    
+</script>

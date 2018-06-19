@@ -1,0 +1,56 @@
+<title>Generation: 0</title>
+<style type="text/css">
+    body {
+        overflow: hidden;
+    }
+    canvas {
+        -webkit-transform:scale(5, 5);
+           -moz-transform:scale(5, 5);
+            -ms-transform:scale(5, 5);
+             -o-transform:scale(5, 5);
+                transform:scale(5, 5);
+    }
+</style>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/ca.js"></script>
+<script type="text/javascript">
+
+window.onload = function() {
+    
+    function animate() {
+        
+        if (!automata.completed()) {
+            
+            //for (var i = 0; i < 256 / 2; i++) {
+                automata.proceed();
+            //}
+            
+            $('title').text('Generation: '+automata.steps);
+            
+            setTimeout(animate, 1000 / 30);
+        }
+    }
+    
+    
+    var automata = new ca.Automata(new ca.Rule3x3(), 256, 256);
+    
+    /* initialize
+     =============*/
+    automata.set(automata.width / 2, automata.height / 2, 1);
+    automata.completed = function() {
+        // set maximum generation
+        //return this.steps > 5000;
+    }
+    
+    // initialize with random set
+    for (var i=0; i < 14000; i++) {
+        var x = parseInt(Math.random() * 256);
+        var y = parseInt(Math.random() * 256);
+        automata.set(x, y, 1);
+    };
+    
+    setTimeout(animate, 0);
+    document.body.appendChild(automata.canvas);
+}
+
+</script>
