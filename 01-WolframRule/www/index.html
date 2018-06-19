@@ -1,0 +1,353 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" type="text/css" href="styles/style.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://evanw.github.io/glfx.js/glfx.js"></script>
+<script type="text/javascript" src="scripts/automaton.js"></script>
+<script type="text/javascript" src="scripts/rule2x3.js"></script>
+<script type="text/javascript">
+
+var Demo = function(size) {
+    this.size = size;
+    this.id = false;
+    this.automaton;
+}
+
+Demo.prototype.do = function(seed, animate) {
+    
+    this.automaton = new ca.Automaton(new Rule2x3(seed), this.size);
+    
+    // create initial state
+    this.automaton.set(this.size / 2, 0, 1);
+    
+    $('#content').prepend(this.automaton.canvas);
+    
+    if (animate) {
+        this.id = setTimeout($.proxy(this._animate, this));
+        return;
+    }
+    
+    while (1) {
+        this.automaton.proceed();
+        if (this.automaton.completed()) break;
+    }
+
+    $(this.automaton.canvas).replaceWith(this.automaton.getImage("jpeg"));
+}
+
+Demo.prototype._animate = function() {
+
+    this.automaton.proceed();
+
+    if (this.automaton.completed()) {
+        $(this.automaton.canvas).replaceWith(this.automaton.getImage("jpeg"));
+        return;
+    }
+
+    this.id = setTimeout($.proxy(this._animate, this), 10);
+}
+
+// stop animation if animating
+Demo.prototype.stop = function() {
+    
+    if (this.id !== false) {
+        clearTimeout(this.id);
+        this.id = false;
+    }
+    
+    this.automaton = null;
+}
+
+function change(demo) {
+    return function() {
+        var seed = $(this).find('option:selected').attr('seed');
+        $('#content').find('canvas,img').remove();
+        demo.stop();
+        demo.do(seed, true);
+    }
+}
+
+
+$(function() {
+    
+    var size = 256; // has to be power of 2
+    var seed = $('#content select').find('option:selected').attr('seed');
+    var demo = new Demo(size);
+    
+    demo.do(seed, true);
+    
+    $('select').change(change(demo));
+    
+});
+
+</script>
+</head>
+<body>
+    <header>
+        <h1>This is wolfram's classification test.</h1>
+    </header>
+    <section id="content">
+        <select>
+            <option seed="0">#0</option>
+            <option seed="1">#1</option>
+            <option seed="2">#2</option>
+            <option seed="3">#3</option>
+            <option seed="4">#4</option>
+            <option seed="5">#5</option>
+            <option seed="6">#6</option>
+            <option seed="7">#7</option>
+            <option seed="8">#8</option>
+            <option seed="9">#9</option>
+            <option seed="10">#10</option>
+            <option seed="11">#11</option>
+            <option seed="12">#12</option>
+            <option seed="13">#13</option>
+            <option seed="14">#14</option>
+            <option seed="15">#15</option>
+            <option seed="16">#16</option>
+            <option seed="17">#17</option>
+            <option seed="18">#18</option>
+            <option seed="19">#19</option>
+            <option seed="20">#20</option>
+            <option seed="21">#21</option>
+            <option seed="22">#22</option>
+            <option seed="23">#23</option>
+            <option seed="24">#24</option>
+            <option seed="25">#25</option>
+            <option seed="26">#26</option>
+            <option seed="27">#27</option>
+            <option seed="28">#28</option>
+            <option seed="29">#29</option>
+            <option seed="30" selected>#30</option>
+            <option seed="31">#31</option>
+            <option seed="32">#32</option>
+            <option seed="33">#33</option>
+            <option seed="34">#34</option>
+            <option seed="35">#35</option>
+            <option seed="36">#36</option>
+            <option seed="37">#37</option>
+            <option seed="38">#38</option>
+            <option seed="39">#39</option>
+            <option seed="40">#40</option>
+            <option seed="41">#41</option>
+            <option seed="42">#42</option>
+            <option seed="43">#43</option>
+            <option seed="44">#44</option>
+            <option seed="45">#45</option>
+            <option seed="46">#46</option>
+            <option seed="47">#47</option>
+            <option seed="48">#48</option>
+            <option seed="49">#49</option>
+            <option seed="50">#50</option>
+            <option seed="51">#51</option>
+            <option seed="52">#52</option>
+            <option seed="53">#53</option>
+            <option seed="54">#54</option>
+            <option seed="55">#55</option>
+            <option seed="56">#56</option>
+            <option seed="57">#57</option>
+            <option seed="58">#58</option>
+            <option seed="59">#59</option>
+            <option seed="60">#60</option>
+            <option seed="61">#61</option>
+            <option seed="62">#62</option>
+            <option seed="63">#63</option>
+            <option seed="64">#64</option>
+            <option seed="65">#65</option>
+            <option seed="66">#66</option>
+            <option seed="67">#67</option>
+            <option seed="68">#68</option>
+            <option seed="69">#69</option>
+            <option seed="70">#70</option>
+            <option seed="71">#71</option>
+            <option seed="72">#72</option>
+            <option seed="73">#73</option>
+            <option seed="74">#74</option>
+            <option seed="75">#75</option>
+            <option seed="76">#76</option>
+            <option seed="77">#77</option>
+            <option seed="78">#78</option>
+            <option seed="79">#79</option>
+            <option seed="80">#80</option>
+            <option seed="81">#81</option>
+            <option seed="82">#82</option>
+            <option seed="83">#83</option>
+            <option seed="84">#84</option>
+            <option seed="85">#85</option>
+            <option seed="86">#86</option>
+            <option seed="87">#87</option>
+            <option seed="88">#88</option>
+            <option seed="89">#89</option>
+            <option seed="90">#90</option>
+            <option seed="91">#91</option>
+            <option seed="92">#92</option>
+            <option seed="93">#93</option>
+            <option seed="94">#94</option>
+            <option seed="95">#95</option>
+            <option seed="96">#96</option>
+            <option seed="97">#97</option>
+            <option seed="98">#98</option>
+            <option seed="99">#99</option>
+            <option seed="100">#100</option>
+            <option seed="101">#101</option>
+            <option seed="102">#102</option>
+            <option seed="103">#103</option>
+            <option seed="104">#104</option>
+            <option seed="105">#105</option>
+            <option seed="106">#106</option>
+            <option seed="107">#107</option>
+            <option seed="108">#108</option>
+            <option seed="109">#109</option>
+            <option seed="110">#110</option>
+            <option seed="111">#111</option>
+            <option seed="112">#112</option>
+            <option seed="113">#113</option>
+            <option seed="114">#114</option>
+            <option seed="115">#115</option>
+            <option seed="116">#116</option>
+            <option seed="117">#117</option>
+            <option seed="118">#118</option>
+            <option seed="119">#119</option>
+            <option seed="120">#120</option>
+            <option seed="121">#121</option>
+            <option seed="122">#122</option>
+            <option seed="123">#123</option>
+            <option seed="124">#124</option>
+            <option seed="125">#125</option>
+            <option seed="126">#126</option>
+            <option seed="127">#127</option>
+            <option seed="128">#128</option>
+            <option seed="129">#129</option>
+            <option seed="130">#130</option>
+            <option seed="131">#131</option>
+            <option seed="132">#132</option>
+            <option seed="133">#133</option>
+            <option seed="134">#134</option>
+            <option seed="135">#135</option>
+            <option seed="136">#136</option>
+            <option seed="137">#137</option>
+            <option seed="138">#138</option>
+            <option seed="139">#139</option>
+            <option seed="140">#140</option>
+            <option seed="141">#141</option>
+            <option seed="142">#142</option>
+            <option seed="143">#143</option>
+            <option seed="144">#144</option>
+            <option seed="145">#145</option>
+            <option seed="146">#146</option>
+            <option seed="147">#147</option>
+            <option seed="148">#148</option>
+            <option seed="149">#149</option>
+            <option seed="150">#150</option>
+            <option seed="151">#151</option>
+            <option seed="152">#152</option>
+            <option seed="153">#153</option>
+            <option seed="154">#154</option>
+            <option seed="155">#155</option>
+            <option seed="156">#156</option>
+            <option seed="157">#157</option>
+            <option seed="158">#158</option>
+            <option seed="159">#159</option>
+            <option seed="160">#160</option>
+            <option seed="161">#161</option>
+            <option seed="162">#162</option>
+            <option seed="163">#163</option>
+            <option seed="164">#164</option>
+            <option seed="165">#165</option>
+            <option seed="166">#166</option>
+            <option seed="167">#167</option>
+            <option seed="168">#168</option>
+            <option seed="169">#169</option>
+            <option seed="170">#170</option>
+            <option seed="171">#171</option>
+            <option seed="172">#172</option>
+            <option seed="173">#173</option>
+            <option seed="174">#174</option>
+            <option seed="175">#175</option>
+            <option seed="176">#176</option>
+            <option seed="177">#177</option>
+            <option seed="178">#178</option>
+            <option seed="179">#179</option>
+            <option seed="180">#180</option>
+            <option seed="181">#181</option>
+            <option seed="182">#182</option>
+            <option seed="183">#183</option>
+            <option seed="184">#184</option>
+            <option seed="185">#185</option>
+            <option seed="186">#186</option>
+            <option seed="187">#187</option>
+            <option seed="188">#188</option>
+            <option seed="189">#189</option>
+            <option seed="190">#190</option>
+            <option seed="191">#191</option>
+            <option seed="192">#192</option>
+            <option seed="193">#193</option>
+            <option seed="194">#194</option>
+            <option seed="195">#195</option>
+            <option seed="196">#196</option>
+            <option seed="197">#197</option>
+            <option seed="198">#198</option>
+            <option seed="199">#199</option>
+            <option seed="200">#200</option>
+            <option seed="201">#201</option>
+            <option seed="202">#202</option>
+            <option seed="203">#203</option>
+            <option seed="204">#204</option>
+            <option seed="205">#205</option>
+            <option seed="206">#206</option>
+            <option seed="207">#207</option>
+            <option seed="208">#208</option>
+            <option seed="209">#209</option>
+            <option seed="210">#210</option>
+            <option seed="211">#211</option>
+            <option seed="212">#212</option>
+            <option seed="213">#213</option>
+            <option seed="214">#214</option>
+            <option seed="215">#215</option>
+            <option seed="216">#216</option>
+            <option seed="217">#217</option>
+            <option seed="218">#218</option>
+            <option seed="219">#219</option>
+            <option seed="220">#220</option>
+            <option seed="221">#221</option>
+            <option seed="222">#222</option>
+            <option seed="223">#223</option>
+            <option seed="224">#224</option>
+            <option seed="225">#225</option>
+            <option seed="226">#226</option>
+            <option seed="227">#227</option>
+            <option seed="228">#228</option>
+            <option seed="229">#229</option>
+            <option seed="230">#230</option>
+            <option seed="231">#231</option>
+            <option seed="232">#232</option>
+            <option seed="233">#233</option>
+            <option seed="234">#234</option>
+            <option seed="235">#235</option>
+            <option seed="236">#236</option>
+            <option seed="237">#237</option>
+            <option seed="238">#238</option>
+            <option seed="239">#239</option>
+            <option seed="240">#240</option>
+            <option seed="241">#241</option>
+            <option seed="242">#242</option>
+            <option seed="243">#243</option>
+            <option seed="244">#244</option>
+            <option seed="245">#245</option>
+            <option seed="246">#246</option>
+            <option seed="247">#247</option>
+            <option seed="248">#248</option>
+            <option seed="249">#249</option>
+            <option seed="250">#250</option>
+            <option seed="251">#251</option>
+            <option seed="252">#252</option>
+            <option seed="253">#253</option>
+            <option seed="254">#254</option>
+            <option seed="255">#255</option>
+        </select>
+    </section>
+</body>
+</html>

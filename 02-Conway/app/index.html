@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Game of life</title>
+<style type="text/css">
+body {
+    margin: 0;
+}
+</style>
+</head>
+<body>
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script type="text/javascript">var ca = {}</script>
+<script src="scripts/core/canvas.js"></script>
+<script src="scripts/core/texture.js"></script>
+<script src="scripts/core/shader.js"></script>
+<script src="scripts/ca/Automata.js"></script>
+<script src="scripts/ca/utils.js"></script>
+<script src="scripts/ca/rule/Rule2x3.js"></script>
+<script src="scripts/ca/rule/Rule2x5.js"></script>
+<script src="scripts/ca/rule/Rule3x3.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+    
+    function animate() {
+        
+        if (!automata.completed()) {
+            
+            //for (var i = 0; i < 256 / 2; i++) {
+                automata.proceed();
+            //}
+            
+            $('title').text('Generation: '+automata.steps);
+            
+            setTimeout(animate, 1000 / 5);
+        }
+    }
+    
+    
+    try {
+        var automata = new ca.Automata(new ca.Rule3x3(), 256, 256);
+    } catch (e) {
+        alert('Uncaught This browser does not support WebGL');
+    }
+    
+    
+    /* initialize
+     =============*/
+    automata.set(automata.width / 2, automata.height / 2, 1);
+    automata.completed = function() {
+        // set maximum generation
+        //return this.steps > 5000;
+    }
+    
+    // initialize with random set
+    for (var i=0; i < 14000; i++) {
+        var x = parseInt(Math.random() * 256);
+        var y = parseInt(Math.random() * 256);
+        automata.set(x, y, 1);
+    };
+    
+    setTimeout(animate, 0);
+    document.body.appendChild(automata.canvas);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+div {
+    width: 256px;
+    margin: 0 10px;
+    padding-bottom: 8px;
+    float: left;
+}
+
+p {
+    margin-left: 10px;
+}
+
+canvas, img {
+    margin: 10px;
+}
+
+span {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+}
