@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Checkbox of Life</title>
+<style type="text/css">
+
+p {
+    padding-top: 40pt;
+}
+
+section {
+    position: absolute;  
+    /*top: 50%;*/
+    left: 50%;
+    margin-left: -384px;
+    /*margin-top: -180px;*/
+}
+
+article,
+p {
+/*    border: 1px solid #000;*/
+    width: 768px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div {
+    margin: 0;
+    margin-top: -10px;
+    padding: 0;
+}
+
+input {
+    margin: 10px;
+    padding: 0;
+    margin-right: 1px;
+}
+
+</style>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/ca.js"></script>
+<script type="text/javascript">
+
+window.onload = function() {
+    
+    function animate() {
+        
+        if (!automata.completed()) {
+            
+            automata.proceed();
+            
+            updateCheckbox();
+            
+            //$('#generations').text(automata.steps+' generation');
+            
+            setTimeout(animate, 1000 / 5);
+        }
+    }
+    
+    function factoryCheckbox() {
+        
+        // default checkbox size 12px
+        
+        for (var i = 0; i < ynum; i++) {
+            var wrapper = $('<div>')
+            for (var j = 0; j < xnum; j++) {
+                var id = j + i * xnum;
+                wrapper.append($('<input type="checkbox" id="'+id+'" class="lattice">'));
+                $('article').append(wrapper);
+            }
+        }
+        
+        $('input.lattice').mouseover(function() {
+            var id = $(this).attr('id');
+            var x = Math.floor(id / xnum);
+            var y = Math.floor(id % ynum);
+            automata.set(x, y, 1);
+            
+            $(this).attr('checked', true);
+        });
+    }
+    
+    function updateCheckbox() {
+        
+        $('input').attr('checked', false);
+        
+        for (var i = 0; i < xnum; i++) {
+            for (var j = 0; j < ynum; j++) {
+                if (automata.get(i, j)) {
+                    $('#'+(i + j * xnum)).attr('checked', true);
+                }
+            }
+        }
+    }
+    
+    /* initialize
+     =============*/
+    var xnum = 33;
+    var ynum = 25;
+    
+    console.log($("article").width(), xnum, ynum);
+    
+    factoryCheckbox();
+    
+    var automata = new ca.Automata(new ca.Rule3x3(), xnum, ynum);
+    automata.set(automata.width / 2, automata.height / 2, 1);
+    automata.completed = function() {
+        // simulate 5000 generations
+        return this.steps > 5000;
+    }
+    
+    // initialize with random set
+    for (var i=0; i < 500; i++) {
+        var x = parseInt(Math.random() * xnum);
+        var y = parseInt(Math.random() * ynum);
+        automata.set(x, y, 1);
+    };
+    
+    updateCheckbox();
+    
+    setTimeout(animate, 0);
+}
+
+</script>
+</head>
+<body>
+<p id="generations"></p>
+<section>
+<article></article>
+</section>
+</body>
+</html>
