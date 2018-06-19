@@ -1,0 +1,55 @@
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/ca.js"></script>
+<script type="text/javascript">
+
+window.onload = function() {
+    
+    function animate() {
+        
+        if (!automata.completed()) {
+            
+            for (var i = 0; i < 64; i++) {
+                automata.proceed();
+            }
+            setTimeout(animate, 1000 / 30);
+        } else {
+            if ($(automata.canvas).size()) switchCanvasToImg();
+        }
+    }
+    
+    function switchCanvasToImg() {
+        
+        var data = automata.canvas.toDataURL("image/jpeg")
+        
+        var image = new Image();
+        image.src = data;
+        image.width = automata.width;
+        image.height = automata.height;
+        
+        $(automata.canvas).replaceWith(image);
+    }
+    
+    // 1121
+    var automata = new ca.Automata(new ca.Rule2x5(1121), 256, 256);
+    
+    /* initialize
+     =============*/
+    automata.set(automata.width / 2, 0, 1);
+    automata.completed = function() {
+        return this.steps > this.height;
+    }
+    
+    // initialize with random set
+    // for (var i=0; i < 1000; i++) {
+    //     var x = parseInt(Math.random() * 256);
+    //     var y = parseInt(Math.random() * 256);
+    //     automata.set(x, y, 1);
+    // };
+    
+    setTimeout(animate, 0);
+    document.body.appendChild(automata.canvas);
+}
+
+</script>
+
+<p>This is cell cellular automata test</p>

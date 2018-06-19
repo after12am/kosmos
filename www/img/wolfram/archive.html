@@ -1,0 +1,40 @@
+<style type="text/css">
+div {
+    width: 276px;
+    float: left;
+}
+
+p {
+    margin-left: 10px;
+}
+
+canvas, img {
+    margin: 10px;
+}
+
+span {
+    width: 100%;
+    margin-left: 10px;
+}
+</style>
+<script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+
+window.onload = function() {
+    
+    
+    for (var i = 0; i < 256; i++) {
+        
+        var dom = $('<div>');
+        var image = $('<img>').attr('src', i+'.jpeg');
+        var label = $('<span>').text('Rule' + i);
+        dom.append(image);
+        dom.append(label);
+        $('body').append(dom);
+    }
+    
+}
+
+</script>
+
+<p>This is 256 cellular automaton test</p>
